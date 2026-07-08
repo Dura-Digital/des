@@ -14,10 +14,10 @@
   --ink-2:#0d1a2c;
   --ink-3:#112238;
   --line:rgba(125,211,252,0.14);
-  --line-2:rgba(125,211,252,0.28);
+  --line-2:rgba(125,211,252,0.32);
   --paper:#e9f1f8;
   --paper-dim:#9fb4c9;
-  --muted:#5c7793;
+  --muted:#7d93a8;       /* lightened from #5c7793 — now ~5.3:1+ on all panel backgrounds */
   --accent:#ffb454;
   --accent-dim:rgba(255,180,84,0.14);
   --data:#5fd4c4;
@@ -44,9 +44,32 @@ body{
 
 a{color:inherit;}
 
-.mono{font-family:'IBM Plex Mono',monospace;}
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{transition-duration:0.001ms!important;animation-duration:0.001ms!important;}
+}
 
-/* CROP MARKS */
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:2px;
+}
+
+/* Skip link */
+.skip-link{
+  position:absolute;left:-9999px;top:0;
+  background:var(--accent);color:var(--ink);
+  padding:10px 16px;z-index:1000;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;
+  text-decoration:none;border-radius:2px;
+}
+.skip-link:focus{left:14px;top:14px;}
+
+/* CROP MARKS (decorative) */
 .crop{position:fixed;width:22px;height:22px;border-color:var(--line-2);z-index:5;pointer-events:none;}
 .crop-tl{top:14px;left:14px;border-top:1px solid var(--line-2);border-left:1px solid var(--line-2);}
 .crop-tr{top:14px;right:14px;border-top:1px solid var(--line-2);border-right:1px solid var(--line-2);}
@@ -59,14 +82,14 @@ nav{
   padding:1.1rem 2.5rem;
   border-bottom:1px solid var(--line-2);
   position:sticky;top:0;z-index:100;
-  background:rgba(10,20,32,0.9);
+  background:rgba(10,20,32,0.92);
   backdrop-filter:blur(10px);
 }
 .nav-brand{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;letter-spacing:0.02em;}
 .nav-brand span{color:var(--accent);}
-.nav-links{display:flex;gap:2rem;}
-.nav-links a{font-size:11px;text-decoration:none;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;transition:color .15s;}
-.nav-links a:hover{color:var(--paper);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-size:11px;text-decoration:none;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;transition:color .15s;padding:4px 2px;}
+.nav-links a:hover,.nav-links a:focus-visible{color:var(--paper);text-decoration:underline;text-underline-offset:4px;}
 
 .wrap{max-width:1180px;margin:0 auto;padding:0 2.5rem;}
 
@@ -94,13 +117,14 @@ h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,5vw,58px);font-we
 
 /* SECTION */
 .section{padding:3.25rem 0;border-top:1px solid var(--line-2);}
+.section:focus-visible{outline:none;}
 .section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:8px;}
 .section-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:0.1em;}
-.section-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;letter-spacing:-0.01em;}
-.section-note{font-size:12.5px;color:var(--muted);max-width:52ch;}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;letter-spacing:-0.01em;margin:0;}
+.section-note{font-size:12.5px;color:var(--muted);max-width:52ch;margin:0;}
 
 /* PRACTICE SCHEMATIC */
-.schematic{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-bottom:0.5rem;}
+.schematic{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-bottom:0.5rem;list-style:none;}
 .node{
   border:1px solid var(--line-2);
   border-left:none;
@@ -129,10 +153,10 @@ h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,5vw,58px);font-we
 /* ROSTER */
 .roster-group{margin-bottom:2.25rem;}
 .roster-group-head{display:flex;align-items:center;gap:10px;margin-bottom:0.9rem;}
-.rg-dot{width:8px;height:8px;background:var(--pc);flex-shrink:0;}
-.rg-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--paper-dim);}
+.rg-dot{width:8px;height:8px;background:var(--pc);flex-shrink:0;border-radius:1px;}
+.rg-label{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--paper-dim);margin:0;}
 .rg-count{font-size:11px;color:var(--muted);}
-.roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1px;background:var(--line-2);border:1px solid var(--line-2);}
+.roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1px;background:var(--line-2);border:1px solid var(--line-2);list-style:none;}
 .member{background:var(--ink);padding:0.85rem 1rem;display:flex;gap:11px;align-items:flex-start;}
 .chip{
   width:34px;height:34px;flex-shrink:0;
@@ -145,7 +169,7 @@ h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,5vw,58px);font-we
 .m-loc{font-size:10px;color:var(--paper-dim);margin-top:4px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.03em;}
 
 /* MEETINGS */
-.meetings{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-2);border:1px solid var(--line-2);}
+.meetings{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-2);border:1px solid var(--line-2);list-style:none;}
 .meeting{background:var(--ink-2);padding:1.75rem;position:relative;}
 .meeting::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--mc);}
 .meeting-status{
@@ -157,7 +181,7 @@ h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,5vw,58px);font-we
 .meeting h3{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;margin-bottom:4px;}
 .meeting-lead{font-size:12px;color:var(--paper-dim);margin-bottom:1rem;}
 .meeting-lead strong{color:var(--paper);font-weight:500;}
-.meeting p{font-size:13px;color:var(--paper-dim);margin-bottom:1rem;max-width:44ch;}
+.meeting p.desc{font-size:13px;color:var(--paper-dim);margin-bottom:1rem;max-width:44ch;}
 .meeting-next{
   font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);
   border-top:1px solid var(--line);padding-top:12px;display:flex;justify-content:space-between;
@@ -181,181 +205,185 @@ footer{border-top:1px solid var(--line-2);padding:2rem 0 3rem;}
 </head>
 <body>
 
-<div class="crop crop-tl"></div>
-<div class="crop crop-tr"></div>
-<div class="crop crop-bl"></div>
-<div class="crop crop-br"></div>
+<a class="skip-link" href="#main">Skip to main content</a>
 
-<nav>
+<div class="crop crop-tl" aria-hidden="true"></div>
+<div class="crop crop-tr" aria-hidden="true"></div>
+<div class="crop crop-bl" aria-hidden="true"></div>
+<div class="crop crop-br" aria-hidden="true"></div>
+
+<nav aria-label="Primary">
   <div class="nav-brand">DURA DIGITAL / <span>DIGITAL ENGINEERING</span></div>
-  <div class="nav-links">
-    <a href="#practices">Practices</a>
-    <a href="#team">Team</a>
-    <a href="#meetings">Meetings</a>
-  </div>
+  <ul class="nav-links">
+    <li><a href="#practices">Practices</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#meetings">Meetings</a></li>
+  </ul>
 </nav>
 
+<main id="main">
 <div class="wrap">
 
   <!-- HERO -->
   <div class="hero">
     <div class="hero-grid">
       <div>
-        <div class="eyebrow">Studio overview</div>
+        <p class="eyebrow">Studio overview</p>
         <h1>Digital Engineering Studio</h1>
         <p class="hero-sub">A distributed team of engineers building across data, web, software, agents, and automation — spanning eight countries in the Americas.</p>
       </div>
-      <div class="titleblock">
-        <div class="tb-row"><span class="tb-k">Dwg No.</span><span class="tb-v">DES&#8209;001</span></div>
-        <div class="tb-row"><span class="tb-k">Practices</span><span class="tb-v">06</span></div>
-        <div class="tb-row"><span class="tb-k">Members</span><span class="tb-v">23</span></div>
-        <div class="tb-row"><span class="tb-k">Scale</span><span class="tb-v">Americas</span></div>
-        <div class="tb-row"><span class="tb-k">Status</span><span class="tb-v on">Active</span></div>
+      <div class="titleblock" role="table" aria-label="Studio summary">
+        <div class="tb-row" role="row"><span class="tb-k" role="rowheader">Dwg No.</span><span class="tb-v" role="cell">DES&#8209;001</span></div>
+        <div class="tb-row" role="row"><span class="tb-k" role="rowheader">Practices</span><span class="tb-v" role="cell">06</span></div>
+        <div class="tb-row" role="row"><span class="tb-k" role="rowheader">Members</span><span class="tb-v" role="cell">23</span></div>
+        <div class="tb-row" role="row"><span class="tb-k" role="rowheader">Scale</span><span class="tb-v" role="cell">Americas</span></div>
+        <div class="tb-row" role="row"><span class="tb-k" role="rowheader">Status</span><span class="tb-v on" role="cell">Active</span></div>
       </div>
     </div>
   </div>
 
   <!-- PRACTICES -->
-  <div class="section" id="practices">
+  <section class="section" id="practices" tabindex="-1" aria-labelledby="practices-heading">
     <div class="section-head">
       <div>
-        <div class="section-num">01 / Structure</div>
-        <div class="section-title">Practices</div>
+        <p class="section-num">01 / Structure</p>
+        <h2 class="section-title" id="practices-heading">Practices</h2>
       </div>
-      <div class="section-note">Six practices make up the studio, each led by a practice lead who owns technical direction and delivery quality for that discipline.</div>
+      <p class="section-note">Six practices make up the studio, each led by a practice lead who owns technical direction and delivery quality for that discipline.</p>
     </div>
-    <div class="schematic">
-      <div class="node" style="--pc:var(--data)">
-        <div class="node-tag">Practice</div>
-        <div class="node-name">Data</div>
+    <ul class="schematic">
+      <li class="node" style="--pc:var(--data)">
+        <p class="node-tag">Practice</p>
+        <h3 class="node-name">Data</h3>
         <div class="node-lead"><span class="lbl">Lead</span>Chris E.</div>
-      </div>
-      <div class="node" style="--pc:var(--webdev)">
-        <div class="node-tag">Practice</div>
-        <div class="node-name">Web Dev</div>
+      </li>
+      <li class="node" style="--pc:var(--webdev)">
+        <p class="node-tag">Practice</p>
+        <h3 class="node-name">Web Dev</h3>
         <div class="node-lead"><span class="lbl">Lead</span>Viviana C.</div>
-      </div>
-      <div class="node" style="--pc:var(--swdev)">
-        <div class="node-tag">Practice</div>
-        <div class="node-name">Software Dev</div>
+      </li>
+      <li class="node" style="--pc:var(--swdev)">
+        <p class="node-tag">Practice</p>
+        <h3 class="node-name">Software Dev</h3>
         <div class="node-lead"><span class="lbl">Lead</span>Dragan R.</div>
-      </div>
-      <div class="node" style="--pc:var(--agents)">
-        <div class="node-tag">Practice</div>
-        <div class="node-name">Agents</div>
+      </li>
+      <li class="node" style="--pc:var(--agents)">
+        <p class="node-tag">Practice</p>
+        <h3 class="node-name">Agents</h3>
         <div class="node-lead"><span class="lbl">Lead</span>Chris H.</div>
-      </div>
-      <div class="node" style="--pc:var(--automation)">
-        <div class="node-tag">Practice</div>
-        <div class="node-name">Automation</div>
+      </li>
+      <li class="node" style="--pc:var(--automation)">
+        <p class="node-tag">Practice</p>
+        <h3 class="node-name">Automation</h3>
         <div class="node-lead"><span class="lbl">Lead</span>Jose V.</div>
-      </div>
-      <div class="node" style="--pc:var(--rpa)">
-        <div class="node-tag">Practice</div>
-        <div class="node-name">RPA</div>
+      </li>
+      <li class="node" style="--pc:var(--rpa)">
+        <p class="node-tag">Practice</p>
+        <h3 class="node-name">RPA</h3>
         <div class="node-lead open"><span class="lbl">Lead</span>Open</div>
-      </div>
-    </div>
-  </div>
+      </li>
+    </ul>
+  </section>
 
   <!-- TEAM -->
-  <div class="section" id="team">
+  <section class="section" id="team" tabindex="-1" aria-labelledby="team-heading">
     <div class="section-head">
       <div>
-        <div class="section-num">02 / Roster</div>
-        <div class="section-title">Team</div>
+        <p class="section-num">02 / Roster</p>
+        <h2 class="section-title" id="team-heading">Team</h2>
       </div>
-      <div class="section-note">23 engineers and consultants, grouped by practice. Shown as first name and last initial.</div>
+      <p class="section-note">23 engineers and consultants, grouped by practice. Shown as first name and last initial.</p>
     </div>
 
     <div class="roster-group">
-      <div class="roster-group-head" style="--pc:var(--data)"><span class="rg-dot"></span><span class="rg-label">Data</span><span class="rg-count">4</span></div>
-      <div class="roster-grid">
-        <div class="member"><div class="chip" style="--pc:var(--data)">CE</div><div><div class="m-name">Chris E.</div><div class="m-role">Practice Lead</div><div class="m-loc">CANADA</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--data)">OS</div><div><div class="m-name">Oscar S.</div><div class="m-role">Data Engineer</div><div class="m-loc">COLOMBIA</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--data)">PC</div><div><div class="m-name">Paulo C.</div><div class="m-role">Data Engineer</div><div class="m-loc">BRAZIL</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--data)">CW</div><div><div class="m-name">Cheyney W.</div><div class="m-role">Data Engineer</div><div class="m-loc">CANADA</div></div></div>
-      </div>
+      <div class="roster-group-head" style="--pc:var(--data)"><span class="rg-dot" aria-hidden="true"></span><h3 class="rg-label">Data</h3><span class="rg-count">4</span></div>
+      <ul class="roster-grid">
+        <li class="member"><div class="chip" style="--pc:var(--data)" aria-hidden="true">CE</div><div><div class="m-name">Chris E.</div><div class="m-role">Practice Lead</div><div class="m-loc">CANADA</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--data)" aria-hidden="true">OS</div><div><div class="m-name">Oscar S.</div><div class="m-role">Data Engineer</div><div class="m-loc">COLOMBIA</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--data)" aria-hidden="true">PC</div><div><div class="m-name">Paulo C.</div><div class="m-role">Data Engineer</div><div class="m-loc">BRAZIL</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--data)" aria-hidden="true">CW</div><div><div class="m-name">Cheyney W.</div><div class="m-role">Data Engineer</div><div class="m-loc">CANADA</div></div></li>
+      </ul>
     </div>
 
     <div class="roster-group">
-      <div class="roster-group-head" style="--pc:var(--webdev)"><span class="rg-dot"></span><span class="rg-label">Web Dev</span><span class="rg-count">4</span></div>
-      <div class="roster-grid">
-        <div class="member"><div class="chip" style="--pc:var(--webdev)">VC</div><div><div class="m-name">Viviana C.</div><div class="m-role">Practice Lead</div><div class="m-loc">URUGUAY</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--webdev)">AF</div><div><div class="m-name">Adriel F.</div><div class="m-role">AI Engineer</div><div class="m-loc">ARGENTINA</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--webdev)">HM</div><div><div class="m-name">Hector M.</div><div class="m-role">AI Engineer</div><div class="m-loc">REMOTE</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--webdev)">NB</div><div><div class="m-name">Nicolas B.</div><div class="m-role">Software Engineer</div><div class="m-loc">ARGENTINA</div></div></div>
-      </div>
+      <div class="roster-group-head" style="--pc:var(--webdev)"><span class="rg-dot" aria-hidden="true"></span><h3 class="rg-label">Web Dev</h3><span class="rg-count">4</span></div>
+      <ul class="roster-grid">
+        <li class="member"><div class="chip" style="--pc:var(--webdev)" aria-hidden="true">VC</div><div><div class="m-name">Viviana C.</div><div class="m-role">Practice Lead</div><div class="m-loc">URUGUAY</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--webdev)" aria-hidden="true">AF</div><div><div class="m-name">Adriel F.</div><div class="m-role">AI Engineer</div><div class="m-loc">ARGENTINA</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--webdev)" aria-hidden="true">HM</div><div><div class="m-name">Hector M.</div><div class="m-role">AI Engineer</div><div class="m-loc">REMOTE</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--webdev)" aria-hidden="true">NB</div><div><div class="m-name">Nicolas B.</div><div class="m-role">Software Engineer</div><div class="m-loc">ARGENTINA</div></div></li>
+      </ul>
     </div>
 
     <div class="roster-group">
-      <div class="roster-group-head" style="--pc:var(--swdev)"><span class="rg-dot"></span><span class="rg-label">Software Dev</span><span class="rg-count">9</span></div>
-      <div class="roster-grid">
-        <div class="member"><div class="chip" style="--pc:var(--swdev)">DR</div><div><div class="m-name">Dragan R.</div><div class="m-role">Practice Lead</div><div class="m-loc">CANADA</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--swdev)">SM</div><div><div class="m-name">Sebastian M.</div><div class="m-role">Sr Consultant</div><div class="m-loc">URUGUAY</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--swdev)">TD</div><div><div class="m-name">Tiago D.</div><div class="m-role">Software Engineer</div><div class="m-loc">BRAZIL</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--swdev)">IL</div><div><div class="m-name">Igor L.</div><div class="m-role">Software Engineer</div><div class="m-loc">BRAZIL</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--swdev)">SH</div><div><div class="m-name">Santiago H.</div><div class="m-role">Software Engineer</div><div class="m-loc">ARGENTINA</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--swdev)">PS</div><div><div class="m-name">Paulo S.</div><div class="m-role">Software Engineer</div><div class="m-loc">BRAZIL</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--swdev)">EC</div><div><div class="m-name">Erick C.</div><div class="m-role">Software Engineer</div><div class="m-loc">COSTA RICA</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--swdev)">FM</div><div><div class="m-name">Fernando M.</div><div class="m-role">Software Engineer</div><div class="m-loc">BRAZIL</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--swdev)">SC</div><div><div class="m-name">Sebastian C.</div><div class="m-role">Software Engineer</div><div class="m-loc">COLOMBIA</div></div></div>
-      </div>
+      <div class="roster-group-head" style="--pc:var(--swdev)"><span class="rg-dot" aria-hidden="true"></span><h3 class="rg-label">Software Dev</h3><span class="rg-count">9</span></div>
+      <ul class="roster-grid">
+        <li class="member"><div class="chip" style="--pc:var(--swdev)" aria-hidden="true">DR</div><div><div class="m-name">Dragan R.</div><div class="m-role">Practice Lead</div><div class="m-loc">CANADA</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--swdev)" aria-hidden="true">SM</div><div><div class="m-name">Sebastian M.</div><div class="m-role">Sr Consultant</div><div class="m-loc">URUGUAY</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--swdev)" aria-hidden="true">TD</div><div><div class="m-name">Tiago D.</div><div class="m-role">Software Engineer</div><div class="m-loc">BRAZIL</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--swdev)" aria-hidden="true">IL</div><div><div class="m-name">Igor L.</div><div class="m-role">Software Engineer</div><div class="m-loc">BRAZIL</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--swdev)" aria-hidden="true">SH</div><div><div class="m-name">Santiago H.</div><div class="m-role">Software Engineer</div><div class="m-loc">ARGENTINA</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--swdev)" aria-hidden="true">PS</div><div><div class="m-name">Paulo S.</div><div class="m-role">Software Engineer</div><div class="m-loc">BRAZIL</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--swdev)" aria-hidden="true">EC</div><div><div class="m-name">Erick C.</div><div class="m-role">Software Engineer</div><div class="m-loc">COSTA RICA</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--swdev)" aria-hidden="true">FM</div><div><div class="m-name">Fernando M.</div><div class="m-role">Software Engineer</div><div class="m-loc">BRAZIL</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--swdev)" aria-hidden="true">SC</div><div><div class="m-name">Sebastian C.</div><div class="m-role">Software Engineer</div><div class="m-loc">COLOMBIA</div></div></li>
+      </ul>
     </div>
 
     <div class="roster-group">
-      <div class="roster-group-head" style="--pc:var(--agents)"><span class="rg-dot"></span><span class="rg-label">Agents</span><span class="rg-count">2</span></div>
-      <div class="roster-grid">
-        <div class="member"><div class="chip" style="--pc:var(--agents)">CH</div><div><div class="m-name">Chris H.</div><div class="m-role">Practice Lead</div><div class="m-loc">USA</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--agents)">NA</div><div><div class="m-name">Nacho A.</div><div class="m-role">Sr Consultant</div><div class="m-loc">MEXICO</div></div></div>
-      </div>
+      <div class="roster-group-head" style="--pc:var(--agents)"><span class="rg-dot" aria-hidden="true"></span><h3 class="rg-label">Agents</h3><span class="rg-count">2</span></div>
+      <ul class="roster-grid">
+        <li class="member"><div class="chip" style="--pc:var(--agents)" aria-hidden="true">CH</div><div><div class="m-name">Chris H.</div><div class="m-role">Practice Lead</div><div class="m-loc">USA</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--agents)" aria-hidden="true">NA</div><div><div class="m-name">Nacho A.</div><div class="m-role">Sr Consultant</div><div class="m-loc">MEXICO</div></div></li>
+      </ul>
     </div>
 
     <div class="roster-group">
-      <div class="roster-group-head" style="--pc:var(--automation)"><span class="rg-dot"></span><span class="rg-label">Automation</span><span class="rg-count">1</span></div>
-      <div class="roster-grid">
-        <div class="member"><div class="chip" style="--pc:var(--automation)">JV</div><div><div class="m-name">Jose V.</div><div class="m-role">Practice Lead</div><div class="m-loc">CANADA</div></div></div>
-      </div>
+      <div class="roster-group-head" style="--pc:var(--automation)"><span class="rg-dot" aria-hidden="true"></span><h3 class="rg-label">Automation</h3><span class="rg-count">1</span></div>
+      <ul class="roster-grid">
+        <li class="member"><div class="chip" style="--pc:var(--automation)" aria-hidden="true">JV</div><div><div class="m-name">Jose V.</div><div class="m-role">Practice Lead</div><div class="m-loc">CANADA</div></div></li>
+      </ul>
     </div>
 
     <div class="roster-group">
-      <div class="roster-group-head" style="--pc:var(--rpa)"><span class="rg-dot"></span><span class="rg-label">Studio-wide</span><span class="rg-count">3</span></div>
-      <div class="roster-grid">
-        <div class="member"><div class="chip" style="--pc:var(--rpa)">CS</div><div><div class="m-name">Chad S.</div><div class="m-role">Studio Lead</div><div class="m-loc">USA</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--rpa)">MO</div><div><div class="m-name">Matthias O.</div><div class="m-role">Solution Architect</div><div class="m-loc">CANADA</div></div></div>
-        <div class="member"><div class="chip" style="--pc:var(--rpa)">AE</div><div><div class="m-name">Alejandro E.</div><div class="m-role">Sr Consultant</div><div class="m-loc">USA</div></div></div>
-      </div>
+      <div class="roster-group-head" style="--pc:var(--rpa)"><span class="rg-dot" aria-hidden="true"></span><h3 class="rg-label">Studio-wide</h3><span class="rg-count">3</span></div>
+      <ul class="roster-grid">
+        <li class="member"><div class="chip" style="--pc:var(--rpa)" aria-hidden="true">CS</div><div><div class="m-name">Chad S.</div><div class="m-role">Studio Lead</div><div class="m-loc">USA</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--rpa)" aria-hidden="true">MO</div><div><div class="m-name">Matthias O.</div><div class="m-role">Solution Architect</div><div class="m-loc">CANADA</div></div></li>
+        <li class="member"><div class="chip" style="--pc:var(--rpa)" aria-hidden="true">AE</div><div><div class="m-name">Alejandro E.</div><div class="m-role">Sr Consultant</div><div class="m-loc">USA</div></div></li>
+      </ul>
     </div>
-  </div>
+  </section>
 
   <!-- MEETINGS -->
-  <div class="section" id="meetings">
+  <section class="section" id="meetings" tabindex="-1" aria-labelledby="meetings-heading">
     <div class="section-head">
       <div>
-        <div class="section-num">03 / Cadence</div>
-        <div class="section-title">Meetings</div>
+        <p class="section-num">03 / Cadence</p>
+        <h2 class="section-title" id="meetings-heading">Meetings</h2>
       </div>
-      <div class="section-note">The recurring ways the studio stays in sync.</div>
+      <p class="section-note">The recurring ways the studio stays in sync.</p>
     </div>
-    <div class="meetings">
-      <div class="meeting" style="--mc:var(--accent)">
-        <div class="meeting-status"><span class="pulse"></span>Scheduling</div>
+    <ul class="meetings">
+      <li class="meeting" style="--mc:var(--accent)">
+        <p class="meeting-status"><span class="pulse" aria-hidden="true"></span>Scheduling</p>
         <h3>AI &amp; Automation Roadshow</h3>
-        <div class="meeting-lead">Led by <strong>Chris H.</strong></div>
-        <p>A rotating look at AI and automation work happening across the studio and the broader business.</p>
+        <p class="meeting-lead">Led by <strong>Chris H.</strong></p>
+        <p class="desc">A rotating look at AI and automation work happening across the studio and the broader business.</p>
         <div class="meeting-next"><span>Next session</span><span class="val tbd">TBD</span></div>
-      </div>
-      <div class="meeting" style="--mc:var(--automation)">
-        <div class="meeting-status"><span class="pulse"></span>Confirmed</div>
+      </li>
+      <li class="meeting" style="--mc:var(--automation)">
+        <p class="meeting-status"><span class="pulse" aria-hidden="true"></span>Confirmed</p>
         <h3>Digital Engineering Studio Sync</h3>
-        <div class="meeting-lead">Led by <strong>Chad S.</strong></div>
-        <p>To help us stay connected and see what everyone is building. The core of these meetings is a casual Show &amp; Tell segment, run on a volunteer or rotation basis so everyone gets a turn in the spotlight.</p>
+        <p class="meeting-lead">Led by <strong>Chad S.</strong></p>
+        <p class="desc">To help us stay connected and see what everyone is building. The core of these meetings is a casual Show &amp; Tell segment, run on a volunteer or rotation basis so everyone gets a turn in the spotlight.</p>
         <div class="meeting-next"><span>Next session</span><span class="val">Jul 17</span></div>
-      </div>
-    </div>
-  </div>
+      </li>
+    </ul>
+  </section>
 
 </div>
+</main>
 
 <footer>
   <div class="wrap">
