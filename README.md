@@ -1,5 +1,7 @@
 # Digital Engineering Studio
 
+[![pages-build-deployment](https://github.com/Dura-Digital/des/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Dura-Digital/des/actions/workflows/pages/pages-build-deployment)
+
 A single-page internal site for Dura Digital's Digital Engineering Studio. It's a lightweight overview of the studio: the practices that make it up, the team roster, and the recurring meeting cadence.
 
 The page is marked `noindex, nofollow` — it's meant to be reachable by direct link, not indexed by search engines.
