@@ -8,6 +8,16 @@ A single static HTML page (`index.html`) — an internal "studio overview" page 
 
 The page is marked `<meta name="robots" content="noindex, nofollow">` and the footer says "NOINDEX — INTERNAL PUBLIC PAGE" — it's meant to be reachable by URL but not indexed by search engines.
 
+## Sensitive data & PII
+
+This directory also holds a private, gitignored "Studio Lead Dashboard" (`digital-engineering-studio.html`) and its data file (`de_studio_notes.json`) — an internal tool with full names, emails, reporting lines, project/client assignments, and 1:1 notes. Both are excluded via `.gitignore` and must stay that way; don't add either to git without explicit instruction.
+
+**No sensitive or PII data should ever ship — in tracked files, in commit messages/PR titles and descriptions, or in code comments.** Concretely:
+
+- Full names beyond first-name + last-initial, personal emails, phone numbers, reporting-chain details, internal HR/management notes, and client/project names tied to named individuals stay out of anything committed or pushed — including commit message text, even when the source file itself is gitignored.
+- Before committing or opening a PR, check the diff and the commit message for this kind of content, not just the file list.
+- If it's unclear whether something counts as sensitive, ask before committing or pushing rather than assuming it's fine.
+
 ## Working with this repo
 
 There is no build, lint, or test tooling — edit `index.html` directly and open it in a browser to preview (e.g. `start index.html` on Windows, or use a simple static file server if testing things like relative paths).
